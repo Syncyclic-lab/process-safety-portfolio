@@ -1,14 +1,15 @@
 /**
  * Single source of truth for every word on the site and the printable resume.
+ * Components only read from here, so content edits never touch layout code.
  *
- * EVERYTHING BELOW IS SAMPLE CONTENT. Replace it with your own details;
- * no component needs to change when you do.
+ * This is a public page: employer-specific details (incident counts, headcount,
+ * inventory strategy) stay on the private Word resume, not here.
  */
 
 export type Equipment = 'exchanger' | 'vessel' | 'column' | 'reactor' | 'tank';
 
 export interface Role {
-  /** P&ID-style tag shown under the equipment symbol, e.g. "R-401". */
+  /** P&ID-style tag shown under the equipment symbol, e.g. "R-201". */
   tag: string;
   /** Which P&ID symbol represents this role in the career flow. */
   equipment: Equipment;
@@ -44,26 +45,44 @@ export interface CaseStudy {
   situation: string;
   action: string;
   result: { value: string; label: string };
+  link?: { label: string; href: string };
+}
+
+export interface Training {
+  name: string;
+  issuer?: string;
+  year?: string;
 }
 
 export const profile = {
-  name: 'Your Name',
-  postNominals: 'P.E.',
+  name: 'Kyle Crosby',
+  postNominals: '',
   headline: 'Process Safety Engineer',
   disciplines: ['Process safety', 'EHS', 'Process engineering'],
   pitch:
-    'I help chemical, pharmaceutical, and manufacturing sites find and control process hazards. I lead PHAs, run PSM programs, and turn study findings into engineering changes that hold up on the plant floor.',
-  status: 'Open to new roles',
-  location: 'City, ST',
-  relocation: 'Open to relocation',
-  workMode: 'On-site or hybrid',
-  experience: '8+ years',
-  industries: ['Specialty chemicals', 'Pharmaceuticals', 'Manufacturing'],
-  focus: ['PSM and RMP', 'PHA and HAZOP', 'LOPA', 'MOC', 'Combustible dust'],
-  credentials: ['PE (Chemical)', 'CSP', 'CCPSC'],
-  email: 'you@example.com',
-  phone: '(555) 555-0100',
-  linkedin: 'https://www.linkedin.com/in/your-profile',
+    'I run process safety and EHS for a PSM-covered Ecolab chemical manufacturing site, from MOC and PSSR to mechanical integrity, incident investigation, and site training. Before that, I led 100+ PHAs across 30+ facilities as a process safety consultant.',
+  /** Two-line summary used at the top of the printable resume. */
+  summary:
+    'Process safety engineer with nearly five years of PSM, EHS, and hazard analysis experience across 30+ facilities, now the sole process safety and EHS lead for a PSM-covered Ecolab manufacturing site.',
+  /** Status line above the name: current role, then context. */
+  status: 'Process Safety Engineer at Ecolab',
+  statusDetails: ['Chemical manufacturing', 'Southern California'],
+  location: 'Southern California',
+  /** The candidate-summary panel in the hero. */
+  facts: [
+    { label: 'Role', value: 'Process Safety Engineer, Ecolab' },
+    { label: 'Experience', value: 'Nearly 5 years (since 2022)' },
+    { label: 'Scope', value: 'All 14 PSM elements · EHS · Process engineering support' },
+    { label: 'Focus', value: 'PHA · MOC · PSSR · MI and RBI · Incident investigation' },
+    { label: 'Background', value: '30+ facilities across chemical, water, ammonia refrigeration, and aerospace' },
+    { label: 'Training', value: '40-hour HAZWOPER · HAZOP · LOPA' },
+    { label: 'Location', value: 'Southern California' },
+  ],
+  focus: ['Process Safety Management', 'Process hazard analysis', 'Management of change', 'Mechanical integrity', 'Risk-based inspection'],
+  email: 'kylemcrosby@gmail.com',
+  /** Not shown on the public site. */
+  phone: null as string | null,
+  linkedin: 'https://www.linkedin.com/in/kylemcrosby',
   /** Put a PDF in /public (e.g. "resume.pdf") and set its name here. Until then the button opens the printable resume page. */
   resumePdf: null as string | null,
   /** Shown in the footer and on the data sheet. */
@@ -72,96 +91,65 @@ export const profile = {
 };
 
 export const metrics: Metric[] = [
-  { tag: 'EXP', value: '8+', label: 'Years in industry', note: 'Chemical, pharma, and manufacturing' },
-  { tag: 'PHA', value: '40+', label: 'PHAs facilitated', note: 'HAZOP, What-If, and checklist' },
-  { tag: 'MOC', value: '300+', label: 'MOCs reviewed', note: 'Technical and safety review' },
-  { tag: 'RCA', value: '25+', label: 'Incident investigations', note: 'Root cause and corrective action' },
+  { tag: 'PHA', value: '200+', label: 'PHAs participated in', note: '100+ led as facilitator' },
+  { tag: 'FAC', value: '30+', label: 'Facilities assessed', note: 'Chemical, water, ammonia, aerospace' },
+  { tag: 'AUD', value: '20+', label: 'Compliance audits', note: 'PSM, RMP, and CalARP' },
+  { tag: 'PSM', value: '14', label: 'PSM elements owned', note: 'Sole process safety lead on site' },
 ];
 
 /** Education feeds the left end of the career flow diagram. */
 export const education = [
   {
     degree: 'B.S. Chemical Engineering',
-    school: 'University name',
-    year: '2015',
-    note: 'Honors, minor, or relevant coursework (optional)',
+    school: 'California State University, Long Beach',
+    schoolShort: 'CSULB',
+    year: '2021',
+    note: 'Minor in Environmental Engineering',
   },
 ];
 
 /** Newest first. The career flow draws them oldest to newest, left to right. */
 export const roles: Role[] = [
   {
-    tag: 'R-401',
+    tag: 'R-201',
     equipment: 'reactor',
-    title: 'Senior Process Safety Engineer',
-    company: 'Specialty Chemicals Manufacturer',
-    industry: 'Specialty chemicals',
-    location: 'City, ST',
-    start: '2022',
+    title: 'Process Safety Engineer',
+    company: 'Ecolab',
+    industry: 'Chemical manufacturing',
+    location: 'Carson, CA',
+    start: 'Jun 2024',
     end: 'Present',
     summary:
-      'Process safety lead for a batch and continuous chemical site covered by OSHA PSM and EPA RMP Program 3.',
+      'Sole process safety engineer and EHS lead for a PSM-covered chemical manufacturing site, with process engineering support.',
     highlights: [
-      'Led the five-year PHA revalidation for 6 process units and closed 140+ recommendations on schedule.',
-      'Built a reactive chemical screening program (DSC and ARC) that is now required before any new batch recipe is approved.',
-      'Cut average MOC cycle time from 34 to 19 days by redesigning the review workflow with operations.',
-      'Mentor two engineers in LOPA facilitation and incident investigation.',
+      'Own all 14 OSHA PSM elements for the site.',
+      'Built a RAGAGEP-compliant risk-based inspection (RBI) program from scratch, and overhauled the mechanical integrity, hot work, and emergency response programs.',
+      'Coordinate and approve 10–20 MOCs per year, lead every PSSR, and have facilitated 10 What-If analyses.',
+      'Lead incident and near-miss investigations using 5-Why, TapRooT, and fishbone analysis.',
+      'Prepare the site for CUPA, South Coast AQMD, Responsible Care, and internal PSM audits.',
+      'Train the full site workforce every month on EHS and PSM topics.',
+      'Support process engineering, including a deaerator tank replacement, relief device evaluations, and API 2000 tank vent sizing.',
     ],
-    focus: ['PHA revalidation', 'LOPA', 'Reactive chemicals', 'RMP'],
+    focus: ['PSM', 'RBI', 'MOC and PSSR', 'Incident investigation', 'EHS'],
   },
   {
-    tag: 'C-301',
+    tag: 'C-101',
     equipment: 'column',
-    title: 'Process Safety Engineer',
-    company: 'Pharmaceutical API Manufacturer',
-    industry: 'Pharmaceuticals',
-    location: 'City, ST',
-    start: '2019',
-    end: '2022',
+    title: 'Project Engineer',
+    company: 'Risk Management Professionals',
+    industry: 'Process safety consulting',
+    location: 'Irvine, CA',
+    start: 'Feb 2022',
+    end: 'Jun 2024',
     summary:
-      'Hazard analysis and process safety support for a multi-product active pharmaceutical ingredient (API) plant.',
+      'Process safety consulting across 30+ facilities in chemical manufacturing, water and wastewater treatment, ammonia refrigeration, aerospace, and CO2 capture.',
     highlights: [
-      'Facilitated HAZOPs for 12 new product introductions during tech transfer from R&D to commercial scale.',
-      'Completed hazardous area classification for solvent handling areas, resolving 3 open insurer findings.',
-      'Developed an electrostatic hazard program for solvent transfers, reactor charging, and drumming.',
+      'Led 100+ and participated in 200+ PHAs (HAZOP, What-If, checklist, LOPA).',
+      'Conducted 20+ PSM, RMP, and CalARP compliance audits and authored 5 RMP/CalARP plans with offsite consequence analyses.',
+      'Field-verified P&IDs at 2 facilities and wrote hazard evaluation and audit reports for regulators and clients.',
+      'Coordinated with EPA, CUPA, and OSHA on client corrective actions, and supported incident investigations and EPA release notifications.',
     ],
-    focus: ['HAZOP', 'Tech transfer', 'Area classification', 'Static hazards'],
-  },
-  {
-    tag: 'V-201',
-    equipment: 'vessel',
-    title: 'EHS Engineer',
-    company: 'Industrial Manufacturing Plant',
-    industry: 'Manufacturing',
-    location: 'City, ST',
-    start: '2017',
-    end: '2019',
-    summary:
-      'EHS engineering for a high-volume manufacturing plant with combustible dust and chemical storage hazards.',
-    highlights: [
-      "Completed the site's first dust hazard analysis to NFPA 652 and managed the resulting capital projects.",
-      'Rewrote lockout/tagout and permit-to-work procedures; the recordable rate fell 38% over two years.',
-      'Maintained Title V air permit and SPCC plan compliance with zero notices of violation.',
-    ],
-    focus: ['Combustible dust', 'DHA', 'Permitting', 'LOTO'],
-  },
-  {
-    tag: 'E-101',
-    equipment: 'exchanger',
-    title: 'Process Engineer',
-    company: 'Chemical Manufacturing Company',
-    industry: 'Chemicals',
-    location: 'City, ST',
-    start: '2015',
-    end: '2017',
-    summary:
-      'Process engineering for two production units: troubleshooting, debottlenecking, and process safety information.',
-    highlights: [
-      'Updated P&IDs and process safety information for two units ahead of a PSM compliance audit.',
-      'Sized relief devices for an exchanger train re-rate and documented the relief design basis.',
-      'Improved distillation yield 4% through operating changes validated in Aspen Plus.',
-    ],
-    focus: ['P&IDs', 'Relief sizing', 'Aspen Plus', 'PSI'],
+    focus: ['HAZOP', 'LOPA', 'Compliance audits', 'RMP / CalARP', 'Dispersion modeling'],
   },
 ];
 
@@ -169,113 +157,130 @@ export const capabilities: Capability[] = [
   {
     tag: 'HAZ',
     title: 'Hazard analysis',
-    summary: 'Leading and documenting structured hazard reviews from concept through operation.',
-    items: ['HAZOP', 'What-If / checklist', 'FMEA', 'LOPA', 'Bow-tie', 'SIL determination (IEC 61511)'],
+    summary: 'Facilitating and documenting structured hazard reviews.',
+    items: ['HAZOP', 'What-If', 'Checklist', 'LOPA', 'Dispersion modeling', 'Offsite consequence analysis'],
   },
   {
     tag: 'PSM',
-    title: 'PSM and RMP programs',
-    summary: 'Running the elements that keep a covered process compliant and under control.',
-    items: ['OSHA 1910.119', 'EPA RMP (40 CFR 68)', 'Management of change', 'PSSR', 'Mechanical integrity', 'Compliance audits'],
+    title: 'PSM programs',
+    summary: 'Running every element of a covered process, day to day.',
+    items: ['OSHA 1910.119', 'Management of change', 'PSSR', 'Mechanical integrity', 'Risk-based inspection', 'RAGAGEP', 'Hot work', 'Emergency response'],
   },
   {
-    tag: 'CHM',
-    title: 'Chemical and dust hazards',
-    summary: 'Characterizing the hazards that come from chemistry, powders, and solvents.',
-    items: ['Reactive chemical screening', 'Calorimetry (DSC, ARC)', 'Dust hazard analysis (NFPA 652)', 'Area classification', 'Electrostatic hazards', 'Relief system design'],
+    tag: 'REG',
+    title: 'Regulatory compliance',
+    summary: 'Preparing sites for the agencies and programs that audit them.',
+    items: ['EPA RMP', 'CalARP', 'CUPA', 'South Coast AQMD', 'Responsible Care', 'Compliance audits', 'Release reporting'],
   },
   {
-    tag: 'EHS',
-    title: 'EHS and compliance',
-    summary: 'Practical programs that protect people and satisfy regulators.',
-    items: ['OSHA general industry', 'Incident investigation and RCA', 'Permit to work and LOTO', 'Air and water permitting', 'ISO 45001 / 14001', 'Training development'],
+    tag: 'INV',
+    title: 'Investigation and training',
+    summary: 'Finding root causes and keeping the whole site trained.',
+    items: ['5-Why', 'TapRooT', 'Fishbone', 'Near-miss investigation', 'Site EHS and PSM training'],
   },
   {
     tag: 'PRC',
     title: 'Process engineering',
-    summary: 'The engineering foundation behind every safety decision.',
-    items: ['P&ID development', 'Heat and material balances', 'Scale-up and tech transfer', 'Process simulation', 'Troubleshooting'],
+    summary: 'The engineering behind the safety decisions.',
+    items: ['Relief device evaluation', 'API 2000 tank venting', 'P&ID field verification', 'Equipment replacement projects'],
   },
   {
     tag: 'SFT',
     title: 'Software',
-    summary: 'Tools used day to day.',
-    items: ['PHA-Pro', 'Aspen Plus', 'ALOHA', 'AutoCAD Plant 3D', 'Power BI', 'Python', 'Excel / VBA'],
+    summary: 'Tools used day to day, including AI.',
+    items: ['PHA-Pro', 'ALOHA', 'SAP', 'Intelex', 'VelocityEHS', 'AI-assisted development', 'Microsoft Office'],
   },
 ];
 
 export const caseStudies: CaseStudy[] = [
   {
     tag: 'Case 01',
-    industry: 'Specialty chemicals',
-    title: 'Site-wide PHA revalidation',
+    industry: 'Chemical manufacturing',
+    title: 'Risk-based inspection program',
     situation:
-      'Six PSM-covered units were due for five-year revalidation, with 90 recommendations still open from the previous cycle.',
+      'Mechanical integrity on a PSM-covered site depends on inspection intervals that are justified, documented, and consistent with RAGAGEP.',
     action:
-      'Built a risk-ranked schedule, facilitated the HAZOP and LOPA sessions, and set up a tracker that gave every recommendation an owner and a due date.',
-    result: { value: '90 → 12', label: 'open recommendations, with every revalidation completed on schedule' },
+      'Built the site’s risk-based inspection program from scratch and overhauled the mechanical integrity program around it.',
+    result: { value: 'RBI', label: 'program built from scratch and fully compliant with RAGAGEP' },
   },
   {
     tag: 'Case 02',
-    industry: 'Manufacturing',
-    title: 'First dust hazard analysis',
+    industry: 'Process safety consulting',
+    title: 'PHA leadership across 30+ facilities',
     situation:
-      'The plant handled combustible powders but had never completed the dust hazard analysis required by NFPA 652.',
+      'Clients in chemical manufacturing, water treatment, ammonia refrigeration, aerospace, and CO2 capture needed PHAs, audits, and risk management plans.',
     action:
-      'Had the dusts tested, assessed each process and building compartment, and prioritized fixes such as explosion venting, isolation, and housekeeping.',
-    result: { value: '$1.2M', label: 'capital plan approved and delivered over two budget cycles' },
+      'Facilitated HAZOP, What-If, checklist, and LOPA studies, conducted compliance audits, and authored RMP/CalARP plans with offsite consequence analysis.',
+    result: { value: '100+', label: 'PHAs led, out of 200+ participated in' },
   },
   {
     tag: 'Case 03',
-    industry: 'Pharmaceuticals',
-    title: 'Hazard reviews built into tech transfer',
+    industry: 'Engineering tool',
+    title: 'API 2000 venting calculator',
     situation:
-      'New products were moving from R&D to commercial scale with hazard reviews happening too late to change the design.',
+      'Tank venting checks under API Std 2000 involve many tables, factors, and edge cases that are easy to get wrong by hand.',
     action:
-      'Introduced staged reviews: chemistry screening at lab scale, HAZOP at pilot scale, and a pre-startup safety review at commercial scale.',
-    result: { value: '12', label: 'product introductions started up with no process safety incidents' },
+      'Built a browser-based calculator with AI-assisted coding: normal and emergency venting, DIERS two-phase onset, and flame arrestor pressure drop, backed by automated regression tests.',
+    result: { value: 'API 2000', label: '7th Edition methods in a tested, shareable web tool' },
+    link: { label: 'Open the calculator', href: 'https://syncyclic-lab.github.io/API-2000/' },
   },
 ];
 
-export const certifications = [
-  { name: 'Professional Engineer (PE), Chemical', issuer: 'State board of licensure', year: '2020' },
-  { name: 'Certified Safety Professional (CSP)', issuer: 'BCSP', year: '2021' },
-  { name: 'CCPS Certified Process Safety Professional (CCPSC)', issuer: 'AIChE CCPS', year: '2022' },
+/** Engineering projects listed on the printable resume. */
+export const projects = [
+  {
+    name: 'API 2000 Venting Calculator',
+    link: 'syncyclic-lab.github.io/API-2000',
+    href: 'https://syncyclic-lab.github.io/API-2000/',
+    description:
+      'Built a web calculator for normal and emergency tank venting per API Std 2000 (7th Ed.), including DIERS two-phase and flame arrestor checks with automated regression tests; developed with AI-assisted coding.',
+  },
 ];
 
-export const training = [
-  'HAZOP leader training',
-  'LOPA facilitator training',
-  'OSHA 30-hour general industry',
-  'Root cause analysis (TapRooT)',
-  'NFPA 652 combustible dust',
+/** Compact skills rows for the one-page printable resume (mirrors the Word resume). */
+export const resumeSkills: [string, string][] = [
+  [
+    'Process safety',
+    'OSHA PSM (29 CFR 1910.119), EPA RMP / CalARP, PHA (HAZOP, What-If, Checklist, LOPA), MOC, PSSR, Mechanical Integrity and RBI, RAGAGEP, Incident Investigation (5-Why, TapRooT, Fishbone), Relief and Tank Vent Sizing, Dispersion Modeling',
+  ],
+  ['Training', '40-Hour HAZWOPER, HAZOP and LOPA Training, Ecolab Process Safety Quality, First Aid / CPR'],
+  ['Software', 'PHA-Pro, ALOHA, SAP, Intelex, VelocityEHS, AI-assisted development tools, Microsoft Office'],
+];
+
+export const training: Training[] = [
+  { name: '40-Hour HAZWOPER' },
+  { name: 'HAZOP training' },
+  { name: 'LOPA training' },
+  { name: 'Process Safety Quality', issuer: 'Ecolab' },
+  { name: 'First Aid / CPR' },
 ];
 
 /** The "About" section, laid out as an engineering data sheet. */
 export const dataSheet = {
   docNo: 'PSE-DS-001',
-  rev: '0',
+  rev: '1',
   profile:
-    'Process safety engineer with a chemical engineering background and eight years across specialty chemicals, pharmaceutical API production, and industrial manufacturing. My work sits where engineering, operations, and compliance meet: identifying what can go wrong, deciding which safeguards are enough, and making sure the fixes actually get built.',
+    'Chemical engineer (CSULB, 2021) working in process safety since 2022. I spent two and a half years consulting across 30+ facilities, leading PHAs, audits, and risk management plans, and now run process safety and EHS for a PSM-covered Ecolab site. I like building programs that hold up to an audit and tools that make the engineering faster to check.',
   approach: [
     {
-      title: 'Verify in the field',
-      text: 'I walk the unit before I sign off on a drawing or a study. The findings that matter most usually come from the plant floor.',
+      title: 'Programs that hold up to audit',
+      text: 'An RBI program built from scratch, and rebuilt mechanical integrity, hot work, and emergency response programs, all measured against RAGAGEP.',
     },
     {
-      title: 'Recommendations people can act on',
-      text: 'Every recommendation is risk-ranked, specific, and assigned to an owner with a date, so it gets closed instead of filed.',
+      title: 'Train the whole site',
+      text: 'Every person on site gets EHS and PSM training every month, so safety knowledge does not sit with one engineer.',
     },
     {
-      title: 'Work with operations, not around them',
-      text: 'Operators and maintenance technicians know the process best. I bring them into reviews early and keep them there.',
+      title: 'Use AI to work faster',
+      text: 'I use AI-assisted development to build engineering tools, like the API 2000 venting calculator, and this site.',
     },
   ],
-  preferences: [
-    { label: 'Target roles', value: 'Process safety engineer, PSM lead, EHS engineer' },
-    { label: 'Industries', value: 'Chemicals, pharmaceuticals, manufacturing' },
-    { label: 'Work mode', value: 'On-site or hybrid' },
-    { label: 'Travel', value: 'Up to 25%' },
-    { label: 'Location', value: 'City, ST · open to relocation' },
+  current: [
+    { label: 'Company', value: 'Ecolab' },
+    { label: 'Since', value: 'June 2024' },
+    { label: 'Site', value: 'PSM-covered chemical manufacturing' },
+    { label: 'Scope', value: 'PSM, EHS, and process engineering support' },
   ],
+  site:
+    'Designed and built with Claude Code, an AI coding assistant: a static Astro site with P&ID-style components, light and dark themes, a printable resume generated from the same data, and automatic deployment to GitHub Pages.',
 };

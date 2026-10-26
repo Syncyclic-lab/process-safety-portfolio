@@ -10,7 +10,7 @@ import { caseStudies } from '../data/resume';
       kicker="Case studies"
       id="work-title"
       title="Selected work"
-      lead="A closer look at a few projects: the situation, what I did, and the measured result."
+      lead="A closer look at a few projects: the situation, what I did, and the result."
     />
 
     <div class="grid">
@@ -38,6 +38,14 @@ import { caseStudies } from '../data/resume';
               <span class="r-label tag">Result</span>
               <span class="r-value">{c.result.value}</span>
               <span class="r-text">{c.result.label}</span>
+              {
+                c.link && (
+                  <a class="r-link" href={c.link.href} target="_blank" rel="noopener">
+                    {c.link.label}
+                    <span class="sr-only"> (opens in a new tab)</span>
+                  </a>
+                )
+              }
             </div>
           </article>
         ))
@@ -111,6 +119,13 @@ import { caseStudies } from '../data/resume';
   .r-text {
     font-size: 0.9rem;
     color: var(--text-2);
+  }
+
+  .r-link {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--accent);
   }
 
   @media (max-width: 960px) {

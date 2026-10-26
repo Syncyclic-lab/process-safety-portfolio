@@ -80,10 +80,10 @@ const identification = [
       <div class="ds-row">
         <span class="ds-num">4</span>
         <div class="ds-body">
-          <h3>Work preferences</h3>
+          <h3>Current role</h3>
           <dl class="kv">
             {
-              dataSheet.preferences.map((p) => (
+              dataSheet.current.map((p) => (
                 <div>
                   <dt>{p.label}</dt>
                   <dd>{p.value}</dd>
@@ -91,6 +91,15 @@ const identification = [
               ))
             }
           </dl>
+        </div>
+      </div>
+
+      <div class="ds-row">
+        <span class="ds-num">5</span>
+        <div class="ds-body">
+          <h3>About this site</h3>
+          <p class="prose">{dataSheet.site}</p>
+          <p class="source"><a href={profile.sourceRepo}>View the source on GitHub</a></p>
         </div>
       </div>
     </div>
@@ -179,8 +188,14 @@ const identification = [
     overflow-wrap: anywhere;
   }
 
-  .kv a {
+  .kv a,
+  .source a {
     color: var(--accent);
+  }
+
+  .source {
+    margin-top: 10px;
+    font-size: 0.93rem;
   }
 
   .approach {

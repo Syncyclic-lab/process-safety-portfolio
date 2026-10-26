@@ -33,7 +33,7 @@ const feed = education[0];
           <div class="feed">
             <span class="tag">Feed</span>
             <span class="feed-name">{feed.degree}</span>
-            <span class="feed-meta">{feed.school} · {feed.year}</span>
+            <span class="feed-meta">{feed.schoolShort ?? feed.school} · {feed.year}</span>
           </div>
 
           <ol class="units">
@@ -63,8 +63,8 @@ const feed = education[0];
             <svg viewBox="0 0 58 34" aria-hidden="true" focusable="false">
               <path d="M1 1 H41 L57 17 L41 33 H1 Z"></path>
             </svg>
-            <span class="out-label">Next role</span>
-            <span class="out-meta">Contact</span>
+            <span class="out-label">Contact</span>
+            <span class="out-meta">Get in touch</span>
           </a>
         </div>
         <p class="hint">Select a unit to view its details</p>

@@ -5,7 +5,7 @@
  */
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
-import { profile, roles, capabilities, certifications, education, training, dataSheet } from '../data/resume';
+import { profile, roles, education, projects, resumeSkills } from '../data/resume';
 import { url } from '../lib/url';
 
 const linkedinDisplay = profile.linkedin.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
@@ -30,14 +30,14 @@ const linkedinDisplay = profile.linkedin.replace(/^https?:\/\/(www\.)?/, '').rep
       <p class="contact">
         <span>{profile.location}</span>
         <a href={`mailto:${profile.email}`}>{profile.email}</a>
-        <span>{profile.phone}</span>
+        {profile.phone && <span>{profile.phone}</span>}
         <a href={profile.linkedin}>{linkedinDisplay}</a>
       </p>
     </header>
 
     <section>
       <h2>Summary</h2>
-      <p>{dataSheet.profile}</p>
+      <p>{profile.summary}</p>
     </section>
 
     <section>
@@ -65,48 +65,52 @@ const linkedinDisplay = profile.linkedin.replace(/^https?:\/\/(www\.)?/, '').rep
     </section>
 
     <section>
-      <h2>Skills</h2>
+      <h2>Projects</h2>
+      {
+        projects.map((p) => (
+          <article class="job">
+            <div class="job-head">
+              <h3>{p.name}</h3>
+              <a class="dates" href={p.href}>
+                {p.link}
+              </a>
+            </div>
+            <ul>
+              <li>{p.description}</li>
+            </ul>
+          </article>
+        ))
+      }
+    </section>
+
+    <section>
+      <h2>Education</h2>
+      {
+        education.map((e) => (
+          <div class="job-head">
+            <p>
+              <strong>{e.degree}</strong>
+              {e.note && `, ${e.note}`} · {e.school}
+            </p>
+            <span class="dates">{e.year}</span>
+          </div>
+        ))
+      }
+    </section>
+
+    <section>
+      <h2>Skills and training</h2>
       <dl class="skills">
         {
-          capabilities.map((c) => (
+          resumeSkills.map(([label, text]) => (
             <div>
-              <dt>{c.title}</dt>
-              <dd>{c.items.join(', ')}</dd>
+              <dt>{label}</dt>
+              <dd>{text}</dd>
             </div>
           ))
         }
       </dl>
     </section>
-
-    <div class="two-col">
-      <section>
-        <h2>Licenses and certifications</h2>
-        <ul class="plain">
-          {
-            certifications.map((c) => (
-              <li>
-                <strong>{c.name}</strong>, {c.issuer}, {c.year}
-              </li>
-            ))
-          }
-        </ul>
-      </section>
-
-      <section>
-        <h2>Education</h2>
-        <ul class="plain">
-          {
-            education.map((e) => (
-              <li>
-                <strong>{e.degree}</strong>, {e.school}, {e.year}
-              </li>
-            ))
-          }
-        </ul>
-        <h2 class="sub">Training</h2>
-        <p>{training.join(' · ')}</p>
-      </section>
-    </div>
   </main>
 </Base>
 
@@ -231,7 +235,7 @@ const linkedinDisplay = profile.linkedin.replace(/^https?:\/\/(www\.)?/, '').rep
 
   .skills div {
     display: grid;
-    grid-template-columns: 1.6in minmax(0, 1fr);
+    grid-template-columns: 1.15in minmax(0, 1fr);
     gap: 12px;
   }
 
@@ -243,19 +247,12 @@ const linkedinDisplay = profile.linkedin.replace(/^https?:\/\/(www\.)?/, '').rep
     margin: 0;
   }
 
-  .two-col {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0 28px;
+  a.dates {
+    color: inherit;
+    text-decoration: none;
   }
 
-  .plain {
-    list-style: none;
-    display: grid;
-    gap: 4px;
-  }
-
-  .plain strong {
+  strong {
     font-weight: 600;
   }
 
@@ -265,8 +262,7 @@ const linkedinDisplay = profile.linkedin.replace(/^https?:\/\/(www\.)?/, '').rep
       border-inline: 0;
     }
 
-    .skills div,
-    .two-col {
+    .skills div {
       grid-template-columns: minmax(0, 1fr);
     }
   }
@@ -277,11 +273,18 @@ const linkedinDisplay = profile.linkedin.replace(/^https?:\/\/(www\.)?/, '').rep
       margin: 0.5in 0.55in;
     }
 
+    /* Slightly denser on paper so the resume stays on one page. */
     .paper {
       max-width: none;
       margin: 0;
       padding: 0;
       border: 0;
+      font-size: 10pt;
+      line-height: 1.4;
+    }
+
+    section {
+      margin-top: 12px;
     }
   }
 </style>

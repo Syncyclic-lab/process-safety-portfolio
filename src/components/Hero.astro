@@ -5,26 +5,24 @@ import { url } from '../lib/url';
 
 const resumeHref = profile.resumePdf ? url(profile.resumePdf) : url('resume/');
 
-// The "faceplate": everything a recruiter needs to qualify the candidate at a glance.
-const facts = [
-  { label: 'Role', value: profile.headline },
-  { label: 'Experience', value: profile.experience },
-  { label: 'Industries', value: profile.industries.join(' · ') },
-  { label: 'Focus', value: profile.focus.join(' · ') },
-  { label: 'Credentials', value: profile.credentials.join(' · ') },
-  { label: 'Location', value: `${profile.location} · ${profile.relocation}` },
-  { label: 'Work mode', value: profile.workMode },
-];
+// The "faceplate": the key facts about the engineer, readable at a glance.
+const facts = profile.facts;
 ---
 
 <section class="hero" id="top" aria-labelledby="hero-name">
   <div class="container">
     <p class="statusline">
       <span class="status"><span class="dot" aria-hidden="true"></span>{profile.status}</span>
-      <span class="sep hide-sm" aria-hidden="true">/</span>
-      <span>{profile.industries.join(' · ')}</span>
-      <span class="sep hide-sm" aria-hidden="true">/</span>
-      <span class="hide-sm">{profile.location}</span>
+      {
+        profile.statusDetails.map((d) => (
+          <>
+            <span class="sep hide-sm" aria-hidden="true">
+              /
+            </span>
+            <span>{d}</span>
+          </>
+        ))
+      }
     </p>
 
     <div class="grid">
@@ -54,7 +52,7 @@ const facts = [
 
       <aside class="faceplate panel" aria-labelledby="faceplate-title">
         <div class="fp-head">
-          <h2 id="faceplate-title">Candidate summary</h2>
+          <h2 id="faceplate-title">Engineer summary</h2>
           <span class="tag">PSE-001</span>
         </div>
         <dl>

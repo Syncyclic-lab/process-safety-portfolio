@@ -5,10 +5,8 @@ import { profile } from '../data/resume';
 import { url } from '../lib/url';
 
 const resumeHref = profile.resumePdf ? url(profile.resumePdf) : url('resume/');
-const tel = profile.phone.replace(/[^\d+]/g, '');
-const industries = new Intl.ListFormat('en', { type: 'conjunction' }).format(
-  profile.industries.map((i) => i.toLowerCase()),
-);
+const tel = profile.phone?.replace(/[^\d+]/g, '');
+const channels = profile.phone ? 3 : 2;
 ---
 
 <section class="section" id="contact" aria-labelledby="contact-title">
@@ -18,10 +16,10 @@ const industries = new Intl.ListFormat('en', { type: 'conjunction' }).format(
       kicker="Get in touch"
       id="contact-title"
       title="Contact"
-      lead={`Open to process safety roles in ${industries}. Email is the fastest way to reach me.`}
+      lead="Questions about process safety, PSM programs, or the tools on this site? Email is the fastest way to reach me."
     />
 
-    <div class="grid">
+    <div class="grid" style={`--channels: ${channels}`}>
       <div class="email panel">
         <span class="tag">Email</span>
         <p class="address" id="email-address">{profile.email}</p>
@@ -38,11 +36,15 @@ const industries = new Intl.ListFormat('en', { type: 'conjunction' }).format(
         </div>
       </div>
 
-      <a class="channel panel" href={`tel:${tel}`}>
-        <Icon name="phone" />
-        <span class="tag">Phone</span>
-        <span class="value">{profile.phone}</span>
-      </a>
+      {
+        profile.phone && (
+          <a class="channel panel" href={`tel:${tel}`}>
+            <Icon name="phone" />
+            <span class="tag">Phone</span>
+            <span class="value">{profile.phone}</span>
+          </a>
+        )
+      }
 
       <a class="channel panel" href={profile.linkedin} target="_blank" rel="noopener">
         <Icon name="linkedin" />
@@ -62,7 +64,7 @@ const industries = new Intl.ListFormat('en', { type: 'conjunction' }).format(
 <style>
   .grid {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 2fr) repeat(var(--channels), minmax(0, 1fr));
     gap: 14px;
   }
 
@@ -125,7 +127,7 @@ const industries = new Intl.ListFormat('en', { type: 'conjunction' }).format(
 
   @media (max-width: 960px) {
     .grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(var(--channels), minmax(0, 1fr));
     }
 
     .email {

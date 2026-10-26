@@ -1,8 +1,8 @@
 # Process safety portfolio
 
-Personal resume site for a process safety engineer (chemicals, pharmaceuticals, manufacturing). Built with [Astro](https://astro.build) as a fast static site and deployed to GitHub Pages.
+Professional portfolio for Kyle Crosby, Process Safety Engineer. Built with AI-assisted development ([Claude Code](https://claude.com/claude-code)) and [Astro](https://astro.build) as a fast static site, deployed to GitHub Pages.
 
-> **Status:** design baseline. Every name, number, and employer on the site is sample content.
+> This page is public: employer-specific details (incident counts, headcount, inventory strategy) stay on the private Word resume, not here.
 
 ## Design approach
 
@@ -20,12 +20,13 @@ All content lives in [`src/data/resume.ts`](src/data/resume.ts). Components read
 
 | Section          | Data                                         |
 | ---------------- | -------------------------------------------- |
-| Hero and summary | `profile`, `metrics`                         |
+| Hero and summary | `profile` (including `facts`), `metrics`     |
 | Experience       | `roles` (newest first), `education`          |
 | Capabilities     | `capabilities`                               |
 | Selected work    | `caseStudies`                                |
-| Credentials      | `certifications`, `education`, `training`    |
+| Credentials      | `education`, `training`                      |
 | About            | `dataSheet`                                  |
+| Printable resume | `profile.summary`, `roles`, `projects`, `resumeSkills` |
 
 Each role picks a P&ID symbol with `equipment`: `exchanger`, `vessel`, `column`, `reactor`, or `tank`.
 
