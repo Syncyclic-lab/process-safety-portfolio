@@ -243,7 +243,7 @@ export const resumeSkills: [string, string][] = [
     'Process safety',
     'OSHA PSM (29 CFR 1910.119), EPA RMP / CalARP, PHA (HAZOP, What-If, Checklist, LOPA), MOC, PSSR, Mechanical Integrity and RBI, RAGAGEP, Incident Investigation (5-Why, TapRooT, Fishbone), Relief and Tank Vent Sizing, Dispersion Modeling',
   ],
-  ['Training', '40-Hour HAZWOPER, HAZOP and LOPA Training, Ecolab Process Safety Quality, First Aid / CPR'],
+  ['Training', '40-Hour HAZWOPER, HAZOP and LOPA Training, Ecolab Process Safety Qualified, First Aid / CPR'],
   ['Software', 'PHA-Pro, ALOHA, SAP, Intelex, VelocityEHS, AI-assisted development tools, Microsoft Office'],
 ];
 
@@ -251,7 +251,7 @@ export const training: Training[] = [
   { name: '40-Hour HAZWOPER' },
   { name: 'HAZOP training' },
   { name: 'LOPA training' },
-  { name: 'Process Safety Quality', issuer: 'Ecolab' },
+  { name: 'Process Safety Qualified', issuer: 'Ecolab' },
   { name: 'First Aid / CPR' },
 ];
 
