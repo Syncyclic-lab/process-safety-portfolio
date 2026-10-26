@@ -68,7 +68,7 @@ export const profile = {
   resumePdf: null as string | null,
   /** Shown in the footer and on the data sheet. */
   updated: 'October 2026',
-  sourceRepo: 'https://github.com/Syncyclic-lab',
+  sourceRepo: 'https://github.com/Syncyclic-lab/process-safety-portfolio',
 };
 
 export const metrics: Metric[] = [
