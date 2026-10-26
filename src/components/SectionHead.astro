@@ -1,0 +1,44 @@
+---
+interface Props {
+  /** Section number shown in the eyebrow, e.g. "01". */
+  num: string;
+  /** Short descriptor after the number, e.g. "Career flow". */
+  kicker: string;
+  /** id for the h2, referenced by the section's aria-labelledby. */
+  id: string;
+  title: string;
+  lead?: string;
+}
+
+const { num, kicker, id, title, lead } = Astro.props;
+---
+
+<header class="section-head">
+  <p class="tag"><span class="num">{num}</span><span class="rule" aria-hidden="true"></span>{kicker}</p>
+  <h2 id={id}>{title}</h2>
+  {lead && <p class="lead">{lead}</p>}
+</header>
+
+<style>
+  .section-head {
+    display: grid;
+    gap: 12px;
+    margin-bottom: clamp(28px, 4vw, 44px);
+  }
+
+  .tag {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .num {
+    color: var(--accent);
+  }
+
+  .rule {
+    width: 28px;
+    height: 1px;
+    background: var(--line-strong);
+  }
+</style>

@@ -1,0 +1,179 @@
+---
+import Icon from './Icon.astro';
+import SectionHead from './SectionHead.astro';
+import { profile } from '../data/resume';
+import { url } from '../lib/url';
+
+const resumeHref = profile.resumePdf ? url(profile.resumePdf) : url('resume/');
+const tel = profile.phone.replace(/[^\d+]/g, '');
+const industries = new Intl.ListFormat('en', { type: 'conjunction' }).format(
+  profile.industries.map((i) => i.toLowerCase()),
+);
+---
+
+<section class="section" id="contact" aria-labelledby="contact-title">
+  <div class="container">
+    <SectionHead
+      num="06"
+      kicker="Get in touch"
+      id="contact-title"
+      title="Contact"
+      lead={`Open to process safety roles in ${industries}. Email is the fastest way to reach me.`}
+    />
+
+    <div class="grid">
+      <div class="email panel">
+        <span class="tag">Email</span>
+        <p class="address" id="email-address">{profile.email}</p>
+        <div class="email-actions">
+          <a class="btn btn-primary" href={`mailto:${profile.email}`}>
+            <Icon name="mail" />
+            Send email
+          </a>
+          <button class="btn" type="button" data-copy={profile.email} aria-describedby="email-address">
+            <Icon name="copy" class="i-copy" />
+            <Icon name="check" class="i-check" />
+            <span data-copy-label>Copy address</span>
+          </button>
+        </div>
+      </div>
+
+      <a class="channel panel" href={`tel:${tel}`}>
+        <Icon name="phone" />
+        <span class="tag">Phone</span>
+        <span class="value">{profile.phone}</span>
+      </a>
+
+      <a class="channel panel" href={profile.linkedin} target="_blank" rel="noopener">
+        <Icon name="linkedin" />
+        <span class="tag">LinkedIn</span>
+        <span class="value">View profile<span class="sr-only"> (opens in a new tab)</span></span>
+      </a>
+
+      <a class="channel panel" href={resumeHref}>
+        <Icon name={profile.resumePdf ? 'download' : 'printer'} />
+        <span class="tag">Resume</span>
+        <span class="value">{profile.resumePdf ? 'Download PDF' : 'Printable version'}</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .email {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 22px;
+  }
+
+  .address {
+    font-size: clamp(1.15rem, 2.2vw, 1.4rem);
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+
+  .email-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: auto;
+    padding-top: 14px;
+  }
+
+  .email-actions :global(.i-check) {
+    display: none;
+  }
+
+  .email-actions .copied :global(.i-check) {
+    display: block;
+  }
+
+  .email-actions .copied :global(.i-copy) {
+    display: none;
+  }
+
+  .channel {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 22px;
+    text-decoration: none;
+    transition: border-color 120ms ease;
+  }
+
+  .channel:hover {
+    border-color: var(--text-3);
+  }
+
+  .channel :global(svg) {
+    width: 22px;
+    height: 22px;
+    margin-bottom: 14px;
+    color: var(--text-3);
+  }
+
+  .value {
+    font-weight: 500;
+  }
+
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .email {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .email,
+    .channel {
+      padding: 16px;
+    }
+
+    .channel {
+      flex-direction: row;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .channel :global(svg) {
+      margin-bottom: 0;
+    }
+
+    .channel .tag {
+      min-width: 70px;
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((button) => {
+    const label = button.querySelector('[data-copy-label]');
+    button.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(button.dataset.copy!);
+      } catch {
+        return;
+      }
+      button.classList.add('copied');
+      if (label) label.textContent = 'Copied';
+      setTimeout(() => {
+        button.classList.remove('copied');
+        if (label) label.textContent = 'Copy address';
+      }, 2000);
+    });
+  });
+</script>

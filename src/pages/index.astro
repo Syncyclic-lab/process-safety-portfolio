@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import CareerFlow from '../components/CareerFlow.astro';
+import Capabilities from '../components/Capabilities.astro';
+import CaseStudies from '../components/CaseStudies.astro';
+import Credentials from '../components/Credentials.astro';
+import DataSheet from '../components/DataSheet.astro';
+import Contact from '../components/Contact.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Base>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <Header />
+  <main id="main">
+    <Hero />
+    <CareerFlow />
+    <Capabilities />
+    <CaseStudies />
+    <Credentials />
+    <DataSheet />
+    <Contact />
+  </main>
+  <Footer />
+</Base>

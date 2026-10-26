@@ -1,0 +1,302 @@
+---
+import Icon from './Icon.astro';
+import { profile, metrics } from '../data/resume';
+import { url } from '../lib/url';
+
+const resumeHref = profile.resumePdf ? url(profile.resumePdf) : url('resume/');
+
+// The "faceplate": everything a recruiter needs to qualify the candidate at a glance.
+const facts = [
+  { label: 'Role', value: profile.headline },
+  { label: 'Experience', value: profile.experience },
+  { label: 'Industries', value: profile.industries.join(' · ') },
+  { label: 'Focus', value: profile.focus.join(' · ') },
+  { label: 'Credentials', value: profile.credentials.join(' · ') },
+  { label: 'Location', value: `${profile.location} · ${profile.relocation}` },
+  { label: 'Work mode', value: profile.workMode },
+];
+---
+
+<section class="hero" id="top" aria-labelledby="hero-name">
+  <div class="container">
+    <p class="statusline">
+      <span class="status"><span class="dot" aria-hidden="true"></span>{profile.status}</span>
+      <span class="sep hide-sm" aria-hidden="true">/</span>
+      <span>{profile.industries.join(' · ')}</span>
+      <span class="sep hide-sm" aria-hidden="true">/</span>
+      <span class="hide-sm">{profile.location}</span>
+    </p>
+
+    <div class="grid">
+      <div class="copy">
+        <h1 id="hero-name">
+          {profile.name}{profile.postNominals && <span class="postnom">, {profile.postNominals}</span>}
+        </h1>
+        <p class="headline">{profile.headline}</p>
+        <p class="disciplines tag">{profile.disciplines.join('  ·  ')}</p>
+        <p class="pitch">{profile.pitch}</p>
+        <div class="cta">
+          <a class="btn btn-primary" href={resumeHref}>
+            <Icon name={profile.resumePdf ? 'download' : 'file'} />
+            {profile.resumePdf ? 'Download resume' : 'View resume'}
+          </a>
+          <a class="btn" href={`mailto:${profile.email}`}>
+            <Icon name="mail" />
+            Email me
+          </a>
+          <a class="btn" href={profile.linkedin} rel="noopener" target="_blank">
+            <Icon name="linkedin" />
+            LinkedIn
+            <span class="sr-only">(opens in a new tab)</span>
+          </a>
+        </div>
+      </div>
+
+      <aside class="faceplate panel" aria-labelledby="faceplate-title">
+        <div class="fp-head">
+          <h2 id="faceplate-title">Candidate summary</h2>
+          <span class="tag">PSE-001</span>
+        </div>
+        <dl>
+          {
+            facts.map((f) => (
+              <div class="row">
+                <dt>{f.label}</dt>
+                <dd>{f.value}</dd>
+              </div>
+            ))
+          }
+        </dl>
+      </aside>
+    </div>
+
+    <ul class="metrics" aria-label="Key numbers">
+      {
+        metrics.map((m) => (
+          <li class="metric panel">
+            <span class="tag">{m.tag}</span>
+            <span class="value">{m.value}</span>
+            <span class="label">{m.label}</span>
+            <span class="note">{m.note}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(28px, 5vw, 56px) clamp(56px, 8vw, 88px);
+  }
+
+  .statusline {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-3);
+    margin-bottom: clamp(28px, 5vw, 48px);
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .dot::after {
+    content: '';
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid var(--accent);
+    animation: pulse 2.4s ease-out infinite;
+  }
+
+  @keyframes pulse {
+    from {
+      transform: scale(0.6);
+      opacity: 1;
+    }
+    to {
+      transform: scale(1.6);
+      opacity: 0;
+    }
+  }
+
+  .sep {
+    color: var(--line-strong);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 64px);
+    align-items: start;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 6vw, 3.75rem);
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+
+  .postnom {
+    color: var(--text-3);
+    font-weight: 400;
+  }
+
+  .headline {
+    margin-top: 10px;
+    font-size: clamp(1.3rem, 2.6vw, 1.65rem);
+    font-weight: 500;
+    color: var(--text-2);
+  }
+
+  .disciplines {
+    margin-top: 14px;
+    white-space: pre-wrap;
+  }
+
+  .pitch {
+    margin-top: 22px;
+    font-size: 1.1rem;
+    line-height: 1.65;
+    color: var(--text-2);
+    max-width: 58ch;
+  }
+
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 30px;
+  }
+
+  /* Faceplate: modeled on an HMI detail popup for a single tag. */
+  .faceplate {
+    overflow: hidden;
+  }
+
+  .fp-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 18px;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .fp-head h2 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0;
+  }
+
+  dl {
+    margin: 0;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 110px minmax(0, 1fr);
+    gap: 12px;
+    padding: 11px 18px;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.93rem;
+  }
+
+  .row:last-child {
+    border-bottom: 0;
+  }
+
+  dt {
+    color: var(--text-3);
+  }
+
+  dd {
+    margin: 0;
+    color: var(--text);
+  }
+
+  .metrics {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 12px;
+    margin-top: clamp(36px, 5vw, 56px);
+  }
+
+  .metric {
+    display: grid;
+    align-content: start;
+    gap: 2px;
+    padding: 16px 18px 18px;
+  }
+
+  .value {
+    font-family: var(--font-mono);
+    font-size: clamp(1.9rem, 3.5vw, 2.4rem);
+    font-weight: 500;
+    line-height: 1.15;
+    margin-top: 8px;
+    letter-spacing: -0.02em;
+  }
+
+  .label {
+    font-weight: 500;
+  }
+
+  .note {
+    font-size: 0.85rem;
+    color: var(--text-3);
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .metrics {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    .hide-sm {
+      display: none;
+    }
+
+    .statusline {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .row {
+      grid-template-columns: 92px minmax(0, 1fr);
+      padding-inline: 14px;
+    }
+
+    .cta .btn {
+      flex: 1 1 auto;
+    }
+
+    .metric {
+      padding: 14px;
+    }
+  }
+</style>

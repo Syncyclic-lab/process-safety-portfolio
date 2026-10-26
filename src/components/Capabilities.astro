@@ -1,0 +1,96 @@
+---
+import SectionHead from './SectionHead.astro';
+import { capabilities } from '../data/resume';
+---
+
+<section class="section" id="capabilities" aria-labelledby="capabilities-title">
+  <div class="container">
+    <SectionHead
+      num="02"
+      kicker="Areas of practice"
+      id="capabilities-title"
+      title="Capabilities"
+      lead="Methods, regulations, and tools I use regularly."
+    />
+
+    <ul class="grid">
+      {
+        capabilities.map((c) => (
+          <li class="cap panel">
+            <div class="head">
+              <span class="badge">{c.tag}</span>
+              <h3>{c.title}</h3>
+            </div>
+            <p class="summary">{c.summary}</p>
+            <ul class="chips">
+              {c.items.map((i) => (
+                <li>{i}</li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .grid {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .cap {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* Rectangular tag box, like an instrument or equipment tag on a drawing. */
+  .badge {
+    flex: none;
+    min-width: 44px;
+    padding: 4px 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: 3px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-align: center;
+    color: var(--text-2);
+  }
+
+  .summary {
+    color: var(--text-2);
+    font-size: 0.95rem;
+  }
+
+  .chips {
+    padding-top: 4px;
+  }
+
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 600px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .cap {
+      padding: 16px;
+    }
+  }
+</style>

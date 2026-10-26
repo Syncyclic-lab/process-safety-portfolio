@@ -1,0 +1,43 @@
+---
+import { profile } from '../data/resume';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container bar">
+    <p>© {year} {profile.name}</p>
+    <p>Last updated {profile.updated}</p>
+    <p><a href={profile.sourceRepo}>Source on GitHub</a></p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--line);
+    padding-block: 28px 36px;
+  }
+
+  .bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--text-3);
+  }
+
+  .bar p:last-child {
+    margin-left: auto;
+  }
+
+  a {
+    color: var(--text-2);
+  }
+
+  @media (max-width: 600px) {
+    .bar p:last-child {
+      margin-left: 0;
+    }
+  }
+</style>

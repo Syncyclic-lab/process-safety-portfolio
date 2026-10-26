@@ -1,0 +1,73 @@
+---
+/**
+ * Simplified P&ID equipment symbols. Every symbol is drawn on an 80x120 box
+ * with its outlet nozzle ending at the bottom centre (40,120), so a process
+ * line drawn along the bottom edge connects to all of them.
+ */
+import type { Equipment } from '../data/resume';
+
+interface Props {
+  type: Equipment;
+  class?: string;
+}
+
+const { type, class: className } = Astro.props;
+---
+
+<svg
+  class:list={['equip', className]}
+  viewBox="0 0 80 120"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="2"
+  stroke-linejoin="round"
+  stroke-linecap="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {
+    type === 'reactor' && (
+      <>
+        <path class="body" d="M14 46 A26 12 0 0 1 66 46 L66 94 A26 12 0 0 1 14 94 Z" />
+        <rect class="body" x="32" y="8" width="16" height="12" rx="2" />
+        <path d="M40 20 V88 M28 88 H52 M28 83 V93 M52 83 V93" />
+        <path d="M40 106 V120" />
+      </>
+    )
+  }
+  {
+    type === 'column' && (
+      <>
+        <path class="body" d="M26 18 A14 8 0 0 1 54 18 L54 98 A14 8 0 0 1 26 98 Z" />
+        <path d="M26 32 H46 M34 46 H54 M26 60 H46 M34 74 H54 M26 88 H46" />
+        <path d="M40 106 V120" />
+      </>
+    )
+  }
+  {
+    type === 'vessel' && (
+      <>
+        <path class="body" d="M18 42 A22 12 0 0 1 62 42 L62 92 A22 12 0 0 1 18 92 Z" />
+        <path class="level" d="M18 74 H62" />
+        <path d="M40 104 V120" />
+      </>
+    )
+  }
+  {
+    type === 'exchanger' && (
+      <>
+        <circle class="body" cx="40" cy="70" r="24" />
+        <path d="M8 70 H18 L24 58 L32 82 L40 58 L48 82 L56 58 L62 70 H72" />
+        <path d="M40 94 V120" />
+      </>
+    )
+  }
+  {
+    type === 'tank' && (
+      <>
+        <path class="body" d="M12 106 V54 L40 38 L68 54 V106 Z" />
+        <path d="M40 106 V120" />
+      </>
+    )
+  }
+</svg>

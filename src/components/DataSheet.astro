@@ -1,0 +1,244 @@
+---
+/** "About", laid out like an engineering data sheet with a drawing title block. */
+import SectionHead from './SectionHead.astro';
+import { dataSheet, profile } from '../data/resume';
+
+const identification = [
+  { label: 'Name', value: profile.name },
+  { label: 'Discipline', value: profile.headline },
+  { label: 'Location', value: profile.location },
+  { label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
+];
+---
+
+<section class="section" id="about" aria-labelledby="about-title">
+  <div class="container">
+    <SectionHead num="05" kicker="Data sheet" id="about-title" title="About" />
+
+    <div class="sheet panel">
+      <div class="titleblock">
+        <div class="cell grow">
+          <span class="cell-label">Title</span>
+          <span>Engineer data sheet</span>
+        </div>
+        <div class="cell">
+          <span class="cell-label">Doc no.</span>
+          <span class="mono">{dataSheet.docNo}</span>
+        </div>
+        <div class="cell">
+          <span class="cell-label">Rev.</span>
+          <span class="mono">{dataSheet.rev}</span>
+        </div>
+        <div class="cell">
+          <span class="cell-label">Date</span>
+          <span class="mono">{profile.updated}</span>
+        </div>
+      </div>
+
+      <div class="ds-row">
+        <span class="ds-num">1</span>
+        <div class="ds-body">
+          <h3>Identification</h3>
+          <dl class="kv">
+            {
+              identification.map((i) => (
+                <div>
+                  <dt>{i.label}</dt>
+                  <dd>{i.href ? <a href={i.href}>{i.value}</a> : i.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+
+      <div class="ds-row">
+        <span class="ds-num">2</span>
+        <div class="ds-body">
+          <h3>Profile</h3>
+          <p class="prose">{dataSheet.profile}</p>
+        </div>
+      </div>
+
+      <div class="ds-row">
+        <span class="ds-num">3</span>
+        <div class="ds-body">
+          <h3>Working approach</h3>
+          <ul class="approach">
+            {
+              dataSheet.approach.map((a) => (
+                <li>
+                  <h4>{a.title}</h4>
+                  <p>{a.text}</p>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+
+      <div class="ds-row">
+        <span class="ds-num">4</span>
+        <div class="ds-body">
+          <h3>Work preferences</h3>
+          <dl class="kv">
+            {
+              dataSheet.preferences.map((p) => (
+                <div>
+                  <dt>{p.label}</dt>
+                  <dd>{p.value}</dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .sheet {
+    overflow: hidden;
+  }
+
+  .titleblock {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) repeat(3, auto);
+    border-bottom: 1px solid var(--line-strong);
+    background: var(--panel-2);
+  }
+
+  .cell {
+    display: grid;
+    gap: 2px;
+    padding: 10px 20px;
+    border-left: 1px solid var(--line);
+    font-size: 0.92rem;
+    font-weight: 500;
+  }
+
+  .cell:first-child {
+    border-left: 0;
+  }
+
+  .cell-label {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 400;
+    color: var(--text-3);
+  }
+
+  .ds-row {
+    display: grid;
+    grid-template-columns: 56px minmax(0, 1fr);
+    border-top: 1px solid var(--line);
+  }
+
+  .titleblock + .ds-row {
+    border-top: 0;
+  }
+
+  .ds-num {
+    padding: 20px 0;
+    border-right: 1px solid var(--line);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    text-align: center;
+    color: var(--text-3);
+  }
+
+  .ds-body {
+    padding: 20px 24px 22px;
+  }
+
+  h3 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .prose {
+    max-width: 75ch;
+    color: var(--text-2);
+  }
+
+  .kv {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: 12px 24px;
+    margin: 0;
+  }
+
+  .kv dt {
+    font-size: 0.8rem;
+    color: var(--text-3);
+  }
+
+  .kv dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .kv a {
+    color: var(--accent);
+  }
+
+  .approach {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  h4 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .approach p {
+    font-size: 0.93rem;
+    color: var(--text-2);
+  }
+
+  @media (max-width: 800px) {
+    .titleblock {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .cell.grow {
+      grid-column: 1 / -1;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .cell:nth-child(2) {
+      border-left: 0;
+    }
+
+    .cell {
+      padding: 10px 14px;
+    }
+
+    .approach {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .kv {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 16px;
+    }
+
+    .ds-row {
+      grid-template-columns: 36px minmax(0, 1fr);
+    }
+
+    .ds-num {
+      padding: 16px 0;
+    }
+
+    .ds-body {
+      padding: 16px;
+    }
+  }
+</style>

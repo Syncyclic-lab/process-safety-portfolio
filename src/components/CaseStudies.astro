@@ -1,0 +1,121 @@
+---
+import SectionHead from './SectionHead.astro';
+import { caseStudies } from '../data/resume';
+---
+
+<section class="section" id="work" aria-labelledby="work-title">
+  <div class="container">
+    <SectionHead
+      num="03"
+      kicker="Case studies"
+      id="work-title"
+      title="Selected work"
+      lead="A closer look at a few projects: the situation, what I did, and the measured result."
+    />
+
+    <div class="grid">
+      {
+        caseStudies.map((c) => (
+          <article class="case panel" aria-labelledby={`${c.tag.replace(/\s+/g, '-').toLowerCase()}-title`}>
+            <div class="head">
+              <span class="tag">{c.tag}</span>
+              <span class="tag">{c.industry}</span>
+            </div>
+            <div class="body">
+              <h3 id={`${c.tag.replace(/\s+/g, '-').toLowerCase()}-title`}>{c.title}</h3>
+              <dl>
+                <div>
+                  <dt>Situation</dt>
+                  <dd>{c.situation}</dd>
+                </div>
+                <div>
+                  <dt>Action</dt>
+                  <dd>{c.action}</dd>
+                </div>
+              </dl>
+            </div>
+            <div class="result">
+              <span class="r-label tag">Result</span>
+              <span class="r-value">{c.result.value}</span>
+              <span class="r-text">{c.result.label}</span>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .case {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 20px;
+    background: var(--panel-2);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .body {
+    flex: 1;
+    padding: 20px 20px 4px;
+  }
+
+  dl {
+    display: grid;
+    gap: 14px;
+    margin: 16px 0 0;
+  }
+
+  dt {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-3);
+  }
+
+  dd {
+    margin: 2px 0 0;
+    font-size: 0.95rem;
+    color: var(--text-2);
+  }
+
+  .result {
+    display: grid;
+    gap: 2px;
+    margin: 20px;
+    padding: 14px 16px;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .r-value {
+    font-family: var(--font-mono);
+    font-size: 1.6rem;
+    font-weight: 500;
+    line-height: 1.2;
+    color: var(--accent);
+  }
+
+  .r-text {
+    font-size: 0.9rem;
+    color: var(--text-2);
+  }
+
+  @media (max-width: 960px) {
+    .grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
